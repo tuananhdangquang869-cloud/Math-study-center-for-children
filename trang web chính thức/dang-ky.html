@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="https://cdn.tailwindcss.com"></script><style>body{font-family:system-ui,sans-serif}.g1{background:linear-gradient(135deg,#ec4899,#f43f5e)}.g2{background:linear-gradient(135deg,#f97316,#f59e0b)}.g3{background:linear-gradient(135deg,#eab308,#84cc16)}.g4{background:linear-gradient(135deg,#22c55e,#14b8a6)}.g5{background:linear-gradient(135deg,#3b82f6,#6366f1)}.btn-y{background:#fbbf24;color:#78350f;font-weight:800;border-radius:.75rem;padding:.7rem 1.4rem;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}.btn-y:hover{background:#f59e0b}.btn-w{border:2px solid rgba(255,255,255,.4);color:#fff;font-weight:600;border-radius:.75rem;padding:.7rem 1.4rem;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}.btn-w:hover{background:rgba(255,255,255,.1)}</style>
+<title>Đăng ký học thử — Toán Sao</title>
+<script>
+function selectRole(r){
+  ['parent','teacher'].forEach(x=>{
+    var el=document.getElementById('role-'+x);
+    el.style.borderColor=x===r?'#2563eb':'#e5e7eb';
+    el.style.background=x===r?'#eff6ff':'#fff';
+  });
+  document.getElementById('grade-row').style.display=r==='parent'?'block':'none';
+  document.getElementById('school-row').style.display=r==='teacher'?'block':'none';
+}
+function submitForm(e){e.preventDefault();document.getElementById('form-area').style.display='none';document.getElementById('success-area').style.display='block';}
+</script>
+</head><body class="bg-gray-50">
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm"><div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between"><a href="index.html" class="flex items-center gap-2" style="text-decoration:none"><div class="w-9 h-9 rounded-xl flex items-center justify-center shadow" style="background:linear-gradient(135deg,#2563eb,#7c3aed)"><span style="color:#fbbf24">★</span></div><div class="text-xl font-black text-gray-900">Toán Sao</div></a><div class="hidden md:flex items-center gap-1"><a href="index.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Trang chủ</a><a href="gioi-thieu.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Giới thiệu</a><a href="chuong-trinh-hoc.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Chương trình</a><a href="hoc-phi.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Học phí</a><div class="w-px h-5 bg-gray-200 mx-1"></div><a href="phu-huynh.html" class="px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 hover:bg-gray-50" style="text-decoration:none">Phụ huynh</a><a href="giao-vien.html" class="px-3 py-2 rounded-lg text-sm font-semibold text-purple-600 hover:bg-gray-50" style="text-decoration:none">Giáo viên</a></div><a href="hoc-toan.html" class="hidden sm:inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold text-white rounded-xl" style="background:linear-gradient(135deg,#2563eb,#7c3aed);text-decoration:none">📚 Học thử</a></div></nav>
+<div class="py-12 px-4 min-h-screen">
+  <div class="max-w-xl mx-auto">
+    <div class="text-center mb-8"><h1 class="text-3xl font-black text-gray-900 mb-2">Đăng ký học thử miễn phí</h1><p class="text-gray-500">7 ngày trải nghiệm đầy đủ — không cần thẻ tín dụng</p></div>
+    <div id="form-area" class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+      <p class="font-bold text-gray-700 mb-3">Bạn là:</p>
+      <div class="grid grid-cols-2 gap-3 mb-5">
+        <div id="role-parent" onclick="selectRole('parent')" class="p-4 rounded-2xl border-2 text-center cursor-pointer transition-all" style="border-color:#e5e7eb">
+          <div class="text-2xl mb-1">👨‍👩‍👧</div><div class="text-sm font-semibold text-gray-700">Phụ huynh</div>
+        </div>
+        <div id="role-teacher" onclick="selectRole('teacher')" class="p-4 rounded-2xl border-2 text-center cursor-pointer transition-all" style="border-color:#e5e7eb">
+          <div class="text-2xl mb-1">👩‍🏫</div><div class="text-sm font-semibold text-gray-700">Giáo viên / Nhà trường</div>
+        </div>
+      </div>
+      <form onsubmit="submitForm(event)" class="space-y-4">
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Họ và tên <span class="text-red-500">*</span></label><input required type="text" placeholder="Nguyễn Thị Hương" class="w-full h-11 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Số điện thoại (Zalo) <span class="text-red-500">*</span></label><input required type="tel" placeholder="0901 234 567" class="w-full h-11 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label><input type="email" placeholder="email@example.com" class="w-full h-11 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></div>
+        <div id="grade-row" style="display:none"><label class="block text-sm font-semibold text-gray-700 mb-1.5">Con đang học lớp mấy?</label><select class="w-full h-11 rounded-xl border border-gray-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="">-- Chọn lớp --</option><option>Lớp 1</option><option>Lớp 2</option><option>Lớp 3</option><option>Lớp 4</option><option>Lớp 5</option></select></div>
+        <div id="school-row" style="display:none"><label class="block text-sm font-semibold text-gray-700 mb-1.5">Tên trường</label><input type="text" placeholder="Trường Tiểu học Bình Chánh" class="w-full h-11 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Ghi chú</label><textarea placeholder="Bất kỳ điều gì bạn muốn chúng tôi biết trước khi tư vấn..." rows="3" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea></div>
+        <button type="submit" class="w-full h-12 text-white rounded-xl font-bold text-sm" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">Đăng ký học thử miễn phí</button>
+      </form>
+      <div class="mt-5 pt-5 border-t border-gray-100 text-center">
+        <p class="text-gray-500 text-sm mb-3">Muốn được tư vấn nhanh hơn?</p>
+        <a href="https://zalo.me/0901234567" class="inline-flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl" style="background:#3b82f6;text-decoration:none">💬 Nhắn Zalo: 0901 234 567</a>
+        <p class="text-gray-400 text-xs mt-2">Phản hồi trong 30 phút (7:00–21:00)</p>
+      </div>
+    </div>
+    <div id="success-area" style="display:none" class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">✅</div>
+      <h2 class="text-2xl font-black text-gray-900 mb-2">Đăng ký thành công!</h2>
+      <p class="text-gray-500 mb-6">Đội ngũ Toán Sao sẽ liên hệ trong vòng <strong>2 giờ</strong> qua số điện thoại bạn cung cấp.</p>
+      <a href="hoc-toan.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold" style="background:#2563eb;text-decoration:none">📚 Học thử ngay trong khi chờ</a>
+    </div>
+    <div class="mt-5 grid grid-cols-3 gap-3 text-center text-sm text-gray-500">
+      <div class="bg-white rounded-xl p-3 border border-gray-100"><div class="text-xl mb-1">🔒</div><div class="text-xs">Bảo mật thông tin</div></div>
+      <div class="bg-white rounded-xl p-3 border border-gray-100"><div class="text-xl mb-1">✅</div><div class="text-xs">Miễn phí 7 ngày</div></div>
+      <div class="bg-white rounded-xl p-3 border border-gray-100"><div class="text-xl mb-1">📞</div><div class="text-xs">Hỗ trợ 7–21h</div></div>
+    </div>
+  </div>
+</div>
+<footer class="pt-12 pb-6" style="background:#111827;color:#d1d5db"><div class="max-w-6xl mx-auto px-4"><div class="grid sm:grid-cols-3 gap-8 mb-8"><div><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#3b82f6,#7c3aed)"><span style="color:#fbbf24">★</span></div><span style="color:#fff;font-weight:900">Toán Sao</span></div><p class="text-sm" style="color:#9ca3af">Trung tâm toán tư duy tiểu học.</p></div><div><h4 class="font-bold mb-3 text-sm" style="color:#fff">Điều hướng</h4><ul class="space-y-2 text-sm"><li><a href="index.html" style="color:#d1d5db;text-decoration:none">Trang chủ</a></li><li><a href="chuong-trinh-hoc.html" style="color:#d1d5db;text-decoration:none">Chương trình</a></li><li><a href="hoc-phi.html" style="color:#d1d5db;text-decoration:none">Học phí</a></li><li><a href="dang-ky.html" style="color:#d1d5db;text-decoration:none">Đăng ký</a></li><li><a href="bao-mat.html" style="color:#d1d5db;text-decoration:none">Bảo mật</a></li><li><a href="case-study.html" style="color:#d1d5db;text-decoration:none">Case Study</a></li></ul></div><div><h4 class="font-bold mb-3 text-sm" style="color:#fff">Liên hệ</h4><ul class="space-y-2 text-sm"><li>📍 123 Nguyễn Văn Linh, Q.7, TP.HCM</li><li>📞 <a href="tel:0901234567" style="color:#d1d5db;text-decoration:none">0901 234 567</a></li><li>✉️ <a href="mailto:hello@toansao.vn" style="color:#d1d5db;text-decoration:none">hello@toansao.vn</a></li><li><a href="https://zalo.me/0901234567" style="color:#60a5fa;text-decoration:none">💬 Zalo tư vấn</a></li></ul></div></div><div class="border-t pt-5 text-xs text-center" style="border-color:#374151;color:#6b7280">© 2026 Trung tâm Toán Sao. Bảo lưu mọi quyền.</div></div></footer>
+</body></html>

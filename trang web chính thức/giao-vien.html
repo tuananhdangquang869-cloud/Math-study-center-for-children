@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="https://cdn.tailwindcss.com"></script><style>body{font-family:system-ui,sans-serif}.g1{background:linear-gradient(135deg,#ec4899,#f43f5e)}.g2{background:linear-gradient(135deg,#f97316,#f59e0b)}.g3{background:linear-gradient(135deg,#eab308,#84cc16)}.g4{background:linear-gradient(135deg,#22c55e,#14b8a6)}.g5{background:linear-gradient(135deg,#3b82f6,#6366f1)}.btn-y{background:#fbbf24;color:#78350f;font-weight:800;border-radius:.75rem;padding:.7rem 1.4rem;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}.btn-y:hover{background:#f59e0b}.btn-w{border:2px solid rgba(255,255,255,.4);color:#fff;font-weight:600;border-radius:.75rem;padding:.7rem 1.4rem;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}.btn-w:hover{background:rgba(255,255,255,.1)}</style>
+<title>Dành cho Giáo viên — Toán Sao</title>
+<script>
+function showTab(tab){['overview','assignments','reports'].forEach(t=>{
+  document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab);
+  document.getElementById('btn-'+t).style.background=t===tab?'#7c3aed':'transparent';
+  document.getElementById('btn-'+t).style.color=t===tab?'#fff':'#6b7280';
+});}</script>
+</head><body class="bg-white">
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm"><div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between"><a href="index.html" class="flex items-center gap-2" style="text-decoration:none"><div class="w-9 h-9 rounded-xl flex items-center justify-center shadow" style="background:linear-gradient(135deg,#2563eb,#7c3aed)"><span style="color:#fbbf24">★</span></div><div class="text-xl font-black text-gray-900">Toán Sao</div></a><div class="hidden md:flex items-center gap-1"><a href="index.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Trang chủ</a><a href="gioi-thieu.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Giới thiệu</a><a href="chuong-trinh-hoc.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Chương trình</a><a href="hoc-phi.html" class="px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50" style="text-decoration:none">Học phí</a><div class="w-px h-5 bg-gray-200 mx-1"></div><a href="phu-huynh.html" class="px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 hover:bg-gray-50" style="text-decoration:none">Phụ huynh</a><a href="giao-vien.html" class="px-3 py-2 rounded-lg text-sm font-semibold text-purple-600 hover:bg-gray-50" style="text-decoration:none">Giáo viên</a></div><a href="hoc-toan.html" class="hidden sm:inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold text-white rounded-xl" style="background:linear-gradient(135deg,#2563eb,#7c3aed);text-decoration:none">📚 Học thử</a></div></nav>
+<section class="py-14 text-white" style="background:linear-gradient(135deg,#7c3aed,#4338ca)">
+  <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+    <div>
+      <div class="inline-block rounded-full px-3 py-1 text-sm mb-4" style="background:rgba(255,255,255,.2)">Dành cho Giáo viên & Nhà trường</div>
+      <h1 class="text-3xl font-black mb-3">Quản lý lớp học thông minh</h1>
+      <p class="mb-6" style="color:#ddd6fe">Dashboard giáo viên: giao bài tập, theo dõi từng học sinh, xem báo cáo tổng hợp và xuất kết quả.</p>
+      <a href="dang-ky.html" class="btn-y">Đăng ký tài khoản giáo viên →</a>
+    </div>
+    <div class="rounded-2xl overflow-hidden shadow-xl"><img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Giáo viên" style="width:100%;height:240px;object-fit:cover"></div>
+  </div>
+</section>
+<section class="py-12 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-xl font-black text-gray-900 mb-1">Xem trước Dashboard Giáo viên</h2>
+    <p class="text-gray-500 text-sm mb-5">Lớp 3A · Trường Tiểu học Bình Chánh · 8 học sinh</p>
+    <div class="flex gap-2 mb-6 bg-white rounded-xl p-1 w-fit shadow-sm border border-gray-100">
+      <button id="btn-overview" onclick="showTab('overview')" style="background:#7c3aed;color:#fff;border-radius:.5rem;padding:.4rem .9rem;font-size:.8rem;font-weight:600;border:none;cursor:pointer">📊 Tổng quan</button>
+      <button id="btn-assignments" onclick="showTab('assignments')" style="background:transparent;color:#6b7280;border-radius:.5rem;padding:.4rem .9rem;font-size:.8rem;font-weight:600;border:none;cursor:pointer">📚 Bài tập</button>
+      <button id="btn-reports" onclick="showTab('reports')" style="background:transparent;color:#6b7280;border-radius:.5rem;padding:.4rem .9rem;font-size:.8rem;font-weight:600;border:none;cursor:pointer">👤 Học sinh</button>
+    </div>
+    <div id="tab-overview">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"><div class="text-2xl mb-2">👥</div><p class="text-xl font-black text-gray-900">8</p><p class="text-gray-500 text-xs">Tổng học sinh</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"><div class="text-2xl mb-2">✅</div><p class="text-xl font-black text-gray-900">6/8</p><p class="text-gray-500 text-xs">Đã nộp bài</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"><div class="text-2xl mb-2">📈</div><p class="text-xl font-black text-gray-900">78%</p><p class="text-gray-500 text-xs">Điểm TB lớp</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"><div class="text-2xl mb-2">📋</div><p class="text-xl font-black text-gray-900">1</p><p class="text-gray-500 text-xs">Bài đang mở</p></div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <h3 class="font-black text-gray-900 mb-3">Điểm yếu phổ biến của lớp</h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3"><div class="flex-1 bg-gray-100 rounded-full h-2"><div class="bg-orange-400 rounded-full h-2" style="width:37%"></div></div><span class="text-sm text-gray-700 w-36">Bảng nhân 9</span><span class="text-sm font-bold text-gray-500">3 HS</span></div>
+          <div class="flex items-center gap-3"><div class="flex-1 bg-gray-100 rounded-full h-2"><div class="bg-orange-400 rounded-full h-2" style="width:25%"></div></div><span class="text-sm text-gray-700 w-36">Chia có dư</span><span class="text-sm font-bold text-gray-500">2 HS</span></div>
+          <div class="flex items-center gap-3"><div class="flex-1 bg-gray-100 rounded-full h-2"><div class="bg-orange-400 rounded-full h-2" style="width:25%"></div></div><span class="text-sm text-gray-700 w-36">Bảng nhân 8</span><span class="text-sm font-bold text-gray-500">2 HS</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-assignments" class="hidden space-y-3">
+      <div class="flex justify-between items-center mb-2"><h3 class="font-black text-gray-900">Bài tập đã giao</h3><button class="text-white text-sm px-3 py-1.5 rounded-xl" style="background:#7c3aed">+ Giao bài mới</button></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-4"><div class="flex-1"><p class="font-bold text-gray-900">Bảng nhân 6–9</p><p class="text-gray-400 text-xs">Hạn: 30/06/2026</p></div><div class="text-center"><p class="font-black text-gray-900">6/8</p><p class="text-gray-400 text-xs">đã nộp</p></div><span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-700">Đang mở</span></div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-4"><div class="flex-1"><p class="font-bold text-gray-900">Chia có dư</p><p class="text-gray-400 text-xs">Hạn: 25/06/2026</p></div><div class="text-center"><p class="font-black text-gray-900">8/8</p><p class="text-gray-400 text-xs">đã nộp</p></div><span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-500">Đã kết thúc</span></div>
+    </div>
+    <div id="tab-reports" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b border-gray-100"><h3 class="font-black text-gray-900">Báo cáo từng học sinh</h3><button class="text-sm px-3 py-1.5 rounded-xl border border-gray-200">📥 Xuất PDF</button></div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm"><thead class="bg-gray-50"><tr><th class="text-left px-4 py-3 text-gray-500 font-semibold">Học sinh</th><th class="text-center px-4 py-3 text-gray-500 font-semibold">Điểm</th><th class="text-center px-4 py-3 text-gray-500 font-semibold">Sao</th><th class="text-left px-4 py-3 text-gray-500 font-semibold">Điểm yếu</th><th class="text-center px-4 py-3 text-gray-500 font-semibold">Trạng thái</th></tr></thead>
+        <tbody class="divide-y divide-gray-50">
+          <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium">Nguyễn Minh</td><td class="px-4 py-3 text-center font-black text-green-600">92%</td><td class="px-4 py-3 text-center" style="color:#fbbf24">★★★</td><td class="px-4 py-3 text-gray-500 text-xs">—</td><td class="px-4 py-3 text-center"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Đã nộp</span></td></tr>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium">Trần Lan Anh</td><td class="px-4 py-3 text-center font-black text-yellow-600">76%</td><td class="px-4 py-3 text-center"><span style="color:#fbbf24">★★</span><span style="color:#e5e7eb">★</span></td><td class="px-4 py-3 text-gray-500 text-xs">Bảng nhân 8</td><td class="px-4 py-3 text-center"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Đã nộp</span></td></tr>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium">Lê Quang Khải</td><td class="px-4 py-3 text-center font-black text-red-500">55%</td><td class="px-4 py-3 text-center"><span style="color:#fbbf24">★</span><span style="color:#e5e7eb">★★</span></td><td class="px-4 py-3 text-gray-500 text-xs">Chia có dư</td><td class="px-4 py-3 text-center"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Đã nộp</span></td></tr>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium">Vũ Đức Thắng</td><td class="px-4 py-3 text-center text-gray-400">—</td><td class="px-4 py-3 text-center" style="color:#e5e7eb">★★★</td><td class="px-4 py-3 text-gray-500 text-xs">—</td><td class="px-4 py-3 text-center"><span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">Chưa làm</span></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-12 text-white text-center" style="background:linear-gradient(135deg,#7c3aed,#4338ca)">
+  <div class="max-w-xl mx-auto px-4"><h2 class="text-2xl font-black mb-3">Đưa Toán Sao vào lớp học của bạn</h2><p class="mb-6" style="color:#ddd6fe">Liên hệ để được tư vấn gói Nhà trường phù hợp.</p><div class="flex flex-col sm:flex-row gap-3 justify-center"><a href="dang-ky.html" class="btn-y">Đăng ký dùng thử</a><a href="tel:0901234567" class="btn-w">📞 0901 234 567</a></div></div>
+</section>
+<footer class="pt-12 pb-6" style="background:#111827;color:#d1d5db"><div class="max-w-6xl mx-auto px-4"><div class="grid sm:grid-cols-3 gap-8 mb-8"><div><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#3b82f6,#7c3aed)"><span style="color:#fbbf24">★</span></div><span style="color:#fff;font-weight:900">Toán Sao</span></div><p class="text-sm" style="color:#9ca3af">Trung tâm toán tư duy tiểu học.</p></div><div><h4 class="font-bold mb-3 text-sm" style="color:#fff">Điều hướng</h4><ul class="space-y-2 text-sm"><li><a href="index.html" style="color:#d1d5db;text-decoration:none">Trang chủ</a></li><li><a href="chuong-trinh-hoc.html" style="color:#d1d5db;text-decoration:none">Chương trình</a></li><li><a href="hoc-phi.html" style="color:#d1d5db;text-decoration:none">Học phí</a></li><li><a href="dang-ky.html" style="color:#d1d5db;text-decoration:none">Đăng ký</a></li><li><a href="bao-mat.html" style="color:#d1d5db;text-decoration:none">Bảo mật</a></li><li><a href="case-study.html" style="color:#d1d5db;text-decoration:none">Case Study</a></li></ul></div><div><h4 class="font-bold mb-3 text-sm" style="color:#fff">Liên hệ</h4><ul class="space-y-2 text-sm"><li>📍 123 Nguyễn Văn Linh, Q.7, TP.HCM</li><li>📞 <a href="tel:0901234567" style="color:#d1d5db;text-decoration:none">0901 234 567</a></li><li>✉️ <a href="mailto:hello@toansao.vn" style="color:#d1d5db;text-decoration:none">hello@toansao.vn</a></li><li><a href="https://zalo.me/0901234567" style="color:#60a5fa;text-decoration:none">💬 Zalo tư vấn</a></li></ul></div></div><div class="border-t pt-5 text-xs text-center" style="border-color:#374151;color:#6b7280">© 2026 Trung tâm Toán Sao. Bảo lưu mọi quyền.</div></div></footer>
+</body></html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Toán Vui — Toán Sao</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0}
+  #app{min-height:100vh}
+  .screen{display:none}
+  .screen.active{display:flex;flex-direction:column}
+  .choice-btn{transition:all .15s;cursor:pointer}
+  .choice-btn:disabled{cursor:default}
+  .choice-btn.correct{background:#22c55e!important;color:#fff!important;border-color:#22c55e!important}
+  .choice-btn.wrong{background:#ef4444!important;color:#fff!important;border-color:#ef4444!important}
+  .choice-btn.dim{background:#f3f4f6!important;color:#9ca3af!important;border-color:#e5e7eb!important}
+  .grade-btn{cursor:pointer;transition:all .15s}
+  .grade-btn:hover{transform:translateX(4px)}
+  .topic-btn{cursor:pointer;transition:all .15s}
+  .topic-btn:hover{transform:scale(1.02)}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .fade-in{animation:fadeIn .3s ease}
+  @keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  .pop{animation:pop .3s ease}
+  .float{animation:fl 2s ease-in-out infinite}
+  @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .progress-bar{transition:width .4s cubic-bezier(.34,1.56,.64,1)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── WELCOME ─────────────────────────────────────── -->
+<div id="screen-welcome" class="screen active min-h-screen items-center justify-center" style="background:linear-gradient(160deg,#3b82f6,#7c3aed,#ec4899)">
+  <a href="index.html" style="position:absolute;top:1rem;left:1rem;color:rgba(255,255,255,.8);text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:.3rem">← Về trang chủ</a>
+  <div class="text-center px-6 py-12 max-w-sm w-full">
+    <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-6 float" style="font-size:4rem">🧮</div>
+    <h1 class="text-5xl font-black text-white mb-2">Toán Vui</h1>
+    <p class="text-white/80 text-lg mb-6">Học toán thật thú vị!</p>
+    <div class="flex justify-center gap-3 mb-8">
+      <span class="text-yellow-300 text-3xl pop" style="animation-delay:0s">⭐</span>
+      <span class="text-yellow-300 text-3xl pop" style="animation-delay:.3s">⭐</span>
+      <span class="text-yellow-300 text-3xl pop" style="animation-delay:.6s">⭐</span>
+    </div>
+    <div class="bg-white/20 rounded-2xl p-4 text-white mb-6 space-y-2 text-sm font-semibold">
+      <p>✨ Dành cho học sinh lớp 1 – 5</p>
+      <p>🎯 Luyện tập theo chủ đề</p>
+      <p>🏆 Kiếm sao và phần thưởng</p>
+    </div>
+    <button onclick="showScreen('grade')" class="w-full h-14 text-yellow-900 font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2" style="background:#fbbf24;border:none;cursor:pointer">
+      📚 Bắt Đầu Học!
+    </button>
+  </div>
+</div>
+
+<!-- ── GRADE SELECTOR ──────────────────────────────── -->
+<div id="screen-grade" class="screen min-h-screen" style="background:linear-gradient(to bottom,#eef2ff,#faf5ff)">
+  <div class="flex items-center gap-3 p-4 mb-2">
+    <button onclick="showScreen('welcome')" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center" style="border:none;cursor:pointer;font-size:1.2rem">←</button>
+    <div><h2 class="text-2xl font-black text-gray-800">Chọn Lớp</h2><p class="text-gray-500 text-sm">Em đang học lớp mấy?</p></div>
+  </div>
+  <div class="px-4 flex flex-col gap-3 pb-8" id="grade-list"></div>
+</div>
+
+<!-- ── TOPIC SELECTOR ──────────────────────────────── -->
+<div id="screen-topic" class="screen min-h-screen" style="background:linear-gradient(to bottom,#eef2ff,#faf5ff)">
+  <div class="flex items-center gap-3 p-4 mb-2">
+    <button onclick="showScreen('grade')" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center" style="border:none;cursor:pointer;font-size:1.2rem">←</button>
+    <div id="topic-header"><h2 class="text-2xl font-black text-gray-800">Chọn Chủ Đề</h2></div>
+  </div>
+  <div class="px-4 flex flex-col gap-3 pb-8" id="topic-list"></div>
+  <div class="mx-4 bg-white rounded-2xl p-4 shadow text-center text-sm text-gray-500">💡 Mỗi bài có <strong>10 câu hỏi</strong> — cố gắng đạt 3 sao nhé!</div>
+</div>
+
+<!-- ── GAME ────────────────────────────────────────── -->
+<div id="screen-game" class="screen min-h-screen flex-col">
+  <!-- Header -->
+  <div id="game-header" class="p-4">
+    <div class="flex items-center gap-3 mb-3">
+      <button onclick="showScreen('topic')" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,.2);border:none;cursor:pointer;color:white;font-size:1rem">←</button>
+      <div class="flex-1"><p id="game-subtitle" class="text-xs" style="color:rgba(255,255,255,.8)">Lớp · Chủ đề</p><p id="game-qnum" class="text-white font-black">Câu 1 / 10</p></div>
+      <div id="streak-badge" class="hidden items-center gap-1 rounded-full px-3 py-1" style="background:#f97316"><span style="color:white">🔥</span><span id="streak-num" class="text-white font-black text-sm">0</span></div>
+    </div>
+    <div class="w-full h-3 rounded-full overflow-hidden" style="background:rgba(255,255,255,.3)">
+      <div id="progress-bar" class="h-full rounded-full progress-bar" style="width:0%;background:#fbbf24"></div>
+    </div>
+  </div>
+  <!-- Score bar -->
+  <div class="flex justify-around bg-white shadow px-4 py-2">
+    <div class="text-center"><p class="text-xs text-gray-400">Đúng</p><p id="score-correct" class="font-black" style="color:#16a34a">0</p></div>
+    <div class="text-center"><p class="text-xs text-gray-400">Sai</p><p id="score-wrong" class="font-black text-red-500">0</p></div>
+    <div class="text-center"><p class="text-xs text-gray-400">Còn lại</p><p id="score-left" class="font-black text-gray-600">10</p></div>
+  </div>
+  <!-- Feedback overlay -->
+  <div id="feedback-overlay" class="hidden" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50;pointer-events:none">
+    <div id="feedback-bubble" class="rounded-full w-28 h-28 flex flex-col items-center justify-center shadow-2xl" style="background:#22c55e">
+      <span id="feedback-emoji" style="font-size:2.5rem">🎉</span>
+      <span id="feedback-text" class="text-white font-black text-sm">Đúng rồi!</span>
+    </div>
+  </div>
+  <!-- Question -->
+  <div class="flex-1 p-4 flex flex-col justify-center">
+    <div id="question-card" class="bg-white rounded-3xl shadow-lg p-6 text-center border-2 mb-5 fade-in" style="border-color:#93c5fd">
+      <p class="text-gray-500 text-sm mb-2">Câu hỏi:</p>
+      <div id="question-display" class="text-3xl font-black text-gray-800 leading-tight whitespace-pre-line"></div>
+    </div>
+    <div id="choices-grid" class="grid grid-cols-2 gap-3"></div>
+  </div>
+</div>
+
+<!-- ── RESULT ──────────────────────────────────────── -->
+<div id="screen-result" class="screen min-h-screen items-center justify-center" style="background:linear-gradient(to bottom,#eef2ff,#faf5ff)">
+  <div class="text-center max-w-sm w-full px-6 py-12">
+    <div id="result-emoji" class="text-7xl mb-4">🏆</div>
+    <h2 id="result-msg" class="text-2xl font-black text-gray-900 mb-1">Xuất sắc!</h2>
+    <p id="result-sub" class="text-gray-500 text-sm mb-5">Chủ đề · Lớp</p>
+    <div class="flex justify-center gap-2 mb-6" id="stars-row"></div>
+    <div id="score-card" class="rounded-3xl p-5 border-2 mb-4"></div>
+    <div id="streak-card" class="hidden bg-orange-50 rounded-2xl px-4 py-2 flex items-center justify-center gap-2 mb-5">
+      <span>🔥</span><p id="streak-msg" class="text-orange-700 font-bold text-sm"></p>
+    </div>
+    <div class="text-gray-400 text-xs mb-5">🏆 3 sao ≥ 90% · 2 sao ≥ 70% · 1 sao ≥ 50%</div>
+    <div class="flex gap-3">
+      <button onclick="goHome()" class="flex-1 h-12 rounded-2xl border-2 border-gray-300 font-semibold text-gray-700" style="cursor:pointer;background:white">🏠 Về menu</button>
+      <button id="replay-btn" onclick="replayGame()" class="flex-1 h-12 rounded-2xl text-white font-semibold" style="cursor:pointer;border:none">🔄 Chơi lại</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────
+const GRADES = {
+  1:{label:'Lớp 1',emoji:'🌱',desc:'Cộng, trừ trong 20',color:'#ec4899',light:'#fdf2f8',border:'#f9a8d4'},
+  2:{label:'Lớp 2',emoji:'🌿',desc:'Cộng trừ 100, bảng nhân',color:'#f97316',light:'#fff7ed',border:'#fdba74'},
+  3:{label:'Lớp 3',emoji:'🌳',desc:'4 phép tính, chia',color:'#eab308',light:'#fefce8',border:'#fde047'},
+  4:{label:'Lớp 4',emoji:'⭐',desc:'Số lớn, phân số',color:'#22c55e',light:'#f0fdf4',border:'#86efac'},
+  5:{label:'Lớp 5',emoji:'🚀',desc:'Thập phân, phần trăm',color:'#3b82f6',light:'#eff6ff',border:'#93c5fd'},
+};
+
+const TOPICS = {
+  1:[
+    {id:'add10',name:'Cộng trong 10',desc:'Các phép cộng từ 1 đến 10',icon:'➕'},
+    {id:'sub10',name:'Trừ trong 10',desc:'Các phép trừ từ 1 đến 10',icon:'➖'},
+    {id:'add20',name:'Cộng trong 20',desc:'Các phép cộng đến 20',icon:'🔢'},
+  ],
+  2:[
+    {id:'add100',name:'Cộng trong 100',desc:'Cộng các số đến 100',icon:'➕'},
+    {id:'sub100',name:'Trừ trong 100',desc:'Trừ các số đến 100',icon:'➖'},
+    {id:'mul25',name:'Bảng nhân 2–5',desc:'Nhân với 2, 3, 4, 5',icon:'✖️'},
+  ],
+  3:[
+    {id:'add1000',name:'Cộng trong 1000',desc:'Cộng các số đến 1000',icon:'➕'},
+    {id:'sub1000',name:'Trừ trong 1000',desc:'Trừ các số đến 1000',icon:'➖'},
+    {id:'mul69',name:'Bảng nhân 6–9',desc:'Nhân với 6, 7, 8, 9',icon:'✖️'},
+    {id:'div',name:'Chia đơn giản',desc:'Chia hết không dư',icon:'➗'},
+  ],
+  4:[
+    {id:'mulbig',name:'Nhân số lớn',desc:'Nhân với số có 2 chữ số',icon:'✖️'},
+    {id:'divbig',name:'Chia số lớn',desc:'Chia cho số có 1–2 chữ số',icon:'➗'},
+    {id:'fraction',name:'Phân số',desc:'Tử số của phép cộng phân số',icon:'½'},
+  ],
+  5:[
+    {id:'decimal',name:'Số thập phân',desc:'Cộng trừ số thập phân',icon:'🔢'},
+    {id:'percent',name:'Phần trăm',desc:'Tính phần trăm đơn giản',icon:'%'},
+    {id:'area',name:'Diện tích',desc:'Diện tích hình chữ nhật',icon:'📐'},
+  ],
+};
+
+// ─── UTILS ─────────────────────────────────────────────────
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function mkChoices(ans,range=10){const s=new Set([ans]);while(s.size<4){const c=ans+rnd(-range,range);if(c>=0&&c!==ans)s.add(c);}return shuffle([...s]);}
+function mkDecChoices(ans){const s=new Set([ans]);while(s.size<4){const c=Math.round((ans+(rnd(-5,5)*0.1))*10)/10;if(c>=0&&c!==ans)s.add(c);}return shuffle([...s]);}
+
+function makeQ(tid){
+  switch(tid){
+    case'add10':{const a=rnd(1,9),b=rnd(1,10-a);return{display:`${a} + ${b} = ?`,ans:a+b,ch:mkChoices(a+b,5)};}
+    case'sub10':{const a=rnd(2,10),b=rnd(1,a);return{display:`${a} - ${b} = ?`,ans:a-b,ch:mkChoices(a-b,5)};}
+    case'add20':{const a=rnd(1,15),b=rnd(1,20-a);return{display:`${a} + ${b} = ?`,ans:a+b,ch:mkChoices(a+b,6)};}
+    case'add100':{const a=rnd(10,80),b=rnd(5,100-a);return{display:`${a} + ${b} = ?`,ans:a+b,ch:mkChoices(a+b,15)};}
+    case'sub100':{const a=rnd(20,100),b=rnd(5,a);return{display:`${a} - ${b} = ?`,ans:a-b,ch:mkChoices(a-b,15)};}
+    case'mul25':{const a=rnd(2,5),b=rnd(1,10);return{display:`${a} × ${b} = ?`,ans:a*b,ch:mkChoices(a*b,10)};}
+    case'add1000':{const a=rnd(100,800),b=rnd(50,1000-a);return{display:`${a} + ${b} = ?`,ans:a+b,ch:mkChoices(a+b,100)};}
+    case'sub1000':{const a=rnd(200,1000),b=rnd(50,a);return{display:`${a} - ${b} = ?`,ans:a-b,ch:mkChoices(a-b,100)};}
+    case'mul69':{const a=rnd(6,9),b=rnd(1,10);return{display:`${a} × ${b} = ?`,ans:a*b,ch:mkChoices(a*b,15)};}
+    case'div':{const b=rnd(2,9),r=rnd(2,10),a=b*r;return{display:`${a} ÷ ${b} = ?`,ans:r,ch:mkChoices(r,5)};}
+    case'mulbig':{const a=rnd(10,50),b=rnd(2,9);return{display:`${a} × ${b} = ?`,ans:a*b,ch:mkChoices(a*b,50)};}
+    case'divbig':{const b=rnd(2,12),r=rnd(5,20),a=b*r;return{display:`${a} ÷ ${b} = ?`,ans:r,ch:mkChoices(r,10)};}
+    case'fraction':{const d1=rnd(2,8),n1=rnd(1,d1-1),d2=rnd(2,8),n2=rnd(1,d2-1),sum=n1*d2+n2*d1,cd=d1*d2;return{display:`${n1}/${d1} + ${n2}/${d2} = ?/${cd}`,ans:sum,ch:mkChoices(sum,5)};}
+    case'decimal':{const a=Math.round((rnd(1,50)+rnd(0,9)/10)*10)/10,b=Math.round((rnd(1,30)+rnd(0,9)/10)*10)/10,s=Math.round((a+b)*10)/10;return{display:`${a.toFixed(1)} + ${b.toFixed(1)} = ?`,ans:s,ch:mkDecChoices(s)};}
+    case'percent':{const p=[10,20,25,50][rnd(0,3)],t=rnd(2,10)*100,s=(p/100)*t;return{display:`${p}% của ${t} = ?`,ans:s,ch:mkChoices(s,30)};}
+    case'area':{const w=rnd(2,15),h=rnd(2,15);return{display:`Hình chữ nhật ${w}cm × ${h}cm\nDiện tích = ? cm²`,ans:w*h,ch:mkChoices(w*h,20)};}
+    default:{const a=rnd(1,10),b=rnd(1,10);return{display:`${a} + ${b} = ?`,ans:a+b,ch:mkChoices(a+b,5)};}
+  }
+}
+
+// ─── STATE ─────────────────────────────────────────────────
+let G={grade:1,topic:null,questions:[],cur:0,correct:0,streak:0,maxStreak:0,answered:false,timer:null};
+
+// ─── SCREENS ───────────────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+// ─── BUILD GRADE LIST ──────────────────────────────────────
+(function(){
+  const el=document.getElementById('grade-list');
+  [1,2,3,4,5].forEach(g=>{
+    const info=GRADES[g];
+    const btn=document.createElement('button');
+    btn.className='grade-btn w-full flex items-center gap-4 p-4 rounded-2xl bg-white shadow-md';
+    btn.style.cssText=`border:2px solid ${info.border};`;
+    btn.innerHTML=`
+      <div class="w-14 h-14 rounded-xl flex items-center justify-center shadow-inner flex-shrink-0" style="background:${info.color};font-size:1.8rem">${info.emoji}</div>
+      <div class="text-left flex-1">
+        <p class="text-xl font-black" style="color:${info.color}">${info.label}</p>
+        <p class="text-gray-500 text-sm">${info.desc}</p>
+      </div>
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" style="background:${info.color}">▶</div>
+    `;
+    btn.onclick=()=>selectGrade(g);
+    el.appendChild(btn);
+  });
+})();
+
+function selectGrade(g){
+  G.grade=g;
+  const info=GRADES[g];
+  // Update topic header
+  document.getElementById('topic-header').innerHTML=`<h2 class="text-2xl font-black text-gray-800">${info.label} — Chọn Chủ Đề</h2><p class="text-gray-500 text-sm">Em muốn luyện tập gì hôm nay?</p>`;
+  // Build topic list
+  const el=document.getElementById('topic-list');
+  el.innerHTML='';
+  TOPICS[g].forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='topic-btn w-full flex items-center gap-4 p-5 rounded-2xl bg-white shadow-md';
+    btn.style.cssText=`border:2px solid ${info.border};`;
+    btn.innerHTML=`
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:${info.light};border:2px solid ${info.border};font-size:1.8rem">${t.icon}</div>
+      <div class="text-left flex-1">
+        <p class="text-lg font-black" style="color:${info.color}">${t.name}</p>
+        <p class="text-gray-500 text-sm">${t.desc}</p>
+      </div>
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" style="background:${info.color}">▶</div>
+    `;
+    btn.onclick=()=>startGame(g,t);
+    el.appendChild(btn);
+  });
+  showScreen('topic');
+}
+
+// ─── GAME LOGIC ────────────────────────────────────────────
+function startGame(g,t){
+  G={grade:g,topic:t,questions:Array.from({length:10},()=>makeQ(t.id)),cur:0,correct:0,streak:0,maxStreak:0,answered:false,timer:null};
+  const info=GRADES[g];
+  // Style header
+  const hdr=document.getElementById('game-header');
+  hdr.style.background=info.color;
+  document.getElementById('game-subtitle').textContent=`${info.label} · ${t.name}`;
+  renderQuestion();
+  showScreen('game');
+}
+
+function renderQuestion(){
+  const q=G.questions[G.cur];
+  const info=GRADES[G.grade];
+  G.answered=false;
+
+  // header
+  document.getElementById('game-qnum').textContent=`Câu ${G.cur+1} / 10`;
+  document.getElementById('progress-bar').style.width=`${(G.cur/10)*100}%`;
+  document.getElementById('progress-bar').style.background='#fbbf24';
+  document.getElementById('score-correct').textContent=G.correct;
+  document.getElementById('score-wrong').textContent=G.cur-G.correct;
+  document.getElementById('score-left').textContent=10-G.cur;
+  document.getElementById('score-correct').style.color=info.color;
+
+  // streak badge
+  const sb=document.getElementById('streak-badge');
+  if(G.streak>=2){sb.classList.remove('hidden');sb.style.display='flex';document.getElementById('streak-num').textContent=G.streak;}
+  else{sb.classList.add('hidden');sb.style.display='none';}
+
+  // question
+  const qd=document.getElementById('question-display');
+  qd.textContent=q.display;
+  document.getElementById('question-card').style.borderColor=info.border;
+  document.getElementById('question-card').classList.add('fade-in');
+  setTimeout(()=>document.getElementById('question-card').classList.remove('fade-in'),400);
+
+  // choices
+  const grid=document.getElementById('choices-grid');
+  grid.innerHTML='';
+  q.ch.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='choice-btn rounded-2xl border-2 p-4 text-2xl font-black bg-white';
+    btn.style.cssText=`border-color:#e5e7eb;color:#1f2937;`;
+    btn.textContent=c;
+    btn.onmouseover=()=>{if(!G.answered){btn.style.borderColor=info.color;btn.style.background=info.light;}};
+    btn.onmouseout=()=>{if(!G.answered&&!btn.classList.contains('correct')&&!btn.classList.contains('wrong')){btn.style.borderColor='#e5e7eb';btn.style.background='#fff';}};
+    btn.onclick=()=>answer(c,q.ans);
+    grid.appendChild(btn);
+  });
+}
+
+function answer(chosen,correct){
+  if(G.answered)return;
+  G.answered=true;
+  const isRight=chosen===correct;
+  if(isRight){G.correct++;G.streak++;G.maxStreak=Math.max(G.maxStreak,G.streak);}
+  else{G.streak=0;}
+
+  // Highlight buttons
+  const btns=document.querySelectorAll('.choice-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    const val=isNaN(b.textContent)?parseFloat(b.textContent):Number(b.textContent);
+    if(val===correct){b.classList.add('correct');}
+    else if(val===chosen&&!isRight){b.classList.add('wrong');}
+    else{b.classList.add('dim');}
+  });
+
+  // Feedback overlay
+  showFeedback(isRight);
+
+  // Update streak badge
+  const sb=document.getElementById('streak-badge');
+  if(G.streak>=2){sb.classList.remove('hidden');sb.style.display='flex';document.getElementById('streak-num').textContent=G.streak;}
+
+  G.timer=setTimeout(()=>{
+    hideFeedback();
+    G.cur++;
+    if(G.cur>=10){showResult();}
+    else{renderQuestion();}
+  },1300);
+}
+
+function showFeedback(ok){
+  const ov=document.getElementById('feedback-overlay');
+  const bub=document.getElementById('feedback-bubble');
+  document.getElementById('feedback-emoji').textContent=ok?'🎉':'😢';
+  document.getElementById('feedback-text').textContent=ok?'Đúng rồi!':'Sai rồi!';
+  bub.style.background=ok?'#22c55e':'#ef4444';
+  ov.style.display='flex';
+}
+function hideFeedback(){document.getElementById('feedback-overlay').style.display='none';}
+
+function showResult(){
+  hideFeedback();
+  const pct=G.correct/10;
+  const stars=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;
+  const msgs=[
+    {e:'🌱',t:"Đừng nản! Thử lại em nhé!"},
+    {e:'💪',t:"Cố lên! Luyện tập thêm nào!"},
+    {e:'😊',t:"Giỏi lắm! Cố gắng thêm nhé!"},
+    {e:'🏆',t:"Xuất sắc! Em thật tuyệt vời!"},
+  ][stars];
+  const info=GRADES[G.grade];
+
+  document.getElementById('result-emoji').textContent=msgs.e;
+  document.getElementById('result-msg').textContent=msgs.t;
+  document.getElementById('result-sub').textContent=`${G.topic.name} · ${info.label}`;
+
+  // Stars
+  const sr=document.getElementById('stars-row');
+  sr.innerHTML='';
+  for(let i=0;i<3;i++){const s=document.createElement('span');s.style.cssText=`font-size:3rem;color:${i<stars?'#fbbf24':'#e5e7eb'}`;s.textContent='★';sr.appendChild(s);}
+
+  // Score card
+  const sc=document.getElementById('score-card');
+  sc.style.cssText=`background:${info.light};border-color:${info.border}`;
+  sc.innerHTML=`<div class="grid grid-cols-3 gap-4 text-center">
+    <div><p class="text-3xl font-black" style="color:${info.color}">${G.correct}</p><p class="text-gray-500 text-xs">Câu đúng</p></div>
+    <div><p class="text-3xl font-black text-red-500">${10-G.correct}</p><p class="text-gray-500 text-xs">Câu sai</p></div>
+    <div><p class="text-3xl font-black" style="color:${info.color}">${Math.round(pct*100)}%</p><p class="text-gray-500 text-xs">Tỉ lệ đúng</p></div>
+  </div>`;
+
+  // Streak
+  if(G.maxStreak>=3){
+    document.getElementById('streak-card').classList.remove('hidden');
+    document.getElementById('streak-card').style.display='flex';
+    document.getElementById('streak-msg').textContent=`🔥 Streak tốt nhất: ${G.maxStreak} câu liên tiếp!`;
+  } else {
+    document.getElementById('streak-card').classList.add('hidden');
+    document.getElementById('streak-card').style.display='none';
+  }
+
+  // Replay button color
+  document.getElementById('replay-btn').style.background=info.color;
+
+  // Confetti
+  if(stars>=2){
+    const end=Date.now()+(stars===3?3000:1500);
+    const frame=()=>{
+      confetti({particleCount:4,angle:60,spread:55,origin:{x:0},colors:['#ff6b6b','#ffd93d','#6bcb77','#4d96ff']});
+      confetti({particleCount:4,angle:120,spread:55,origin:{x:1},colors:['#ff6b6b','#ffd93d','#6bcb77','#4d96ff']});
+      if(Date.now()<end)requestAnimationFrame(frame);
+    };
+    frame();
+  }
+
+  showScreen('result');
+}
+
+function goHome(){showScreen('welcome');}
+function replayGame(){startGame(G.grade,G.topic);}
+</script>
+</body>
+</html>
